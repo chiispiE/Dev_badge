@@ -1,42 +1,26 @@
-# Active Developer Badge Bot
+# 🤖 Active Developer Badge Bot [Luci]
 
-A Discord bot with a clean project structure.
+[![Node.js CI](https://github.com/cristobalvm10/Active-Developer-Badge/actions/workflows/node.js.yml/badge.svg)](https://github.com/cristobalvm10/Active-Developer-Badge/actions/workflows/node.js.yml)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![Discord.js](https://img.shields.io/badge/discord.js-v14.6.0-5865F2?logo=discord&logoColor=white)](https://discord.js.org/)
 
-## Project Structure
+Un bot de Discord moderno, estructurado y listo para usar, diseñado para ayudarte a obtener la **Active Developer Badge** de Discord.
 
-```
+## 🚀 Características
+
+- **Slash Commands:** Totalmente compatible con los comandos de barra de Discord.
+- **Arquitectura Limpia:** Separación clara entre la lógica del bot y los comandos.
+- **Moderación Básica:** Incluye comandos de `ban` y `kick` con validación de permisos.
+- **Información Detallada:** Comandos para obtener datos del servidor y de los usuarios.
+
+## 📂 Estructura del Proyecto
+
+```text
 Dev_badge/
-├── index.js           # Entry point, loads src/index.js
-├── package.json       # Project metadata and scripts
-├── .env.example       # Example environment file
 ├── src/
-│   ├── index.js       # Starts the bot
-│   └── bot.js         # Bot logic
-```
-
-## Setup
-
-1. Copy `.env.example` to `.env` and add your Discord bot token.
-2. Install dependencies:
-
-    ```powershell
-    npm install
-    ```
-
-3. Start the bot:
-
-    ```powershell
-    npm start
-    ```
-
-## Development
-
-For hot-reloading during development:
-
-```powershell
-npm run dev
-```
-
-## License
-
-ISC
+│   ├── commands/     # Carpeta de comandos (Slash Commands)
+│   ├── bot.js        # Configuración y eventos del cliente
+│   └── index.js      # Punto de entrada de la lógica
+├── .env              # Variables de entorno (Token)
+├── index.js          # Punto de entrada principal
+└── package.json      # Dependencias y scripts
