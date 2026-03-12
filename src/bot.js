@@ -25,19 +25,58 @@ function loadCommands(client) {
   }
 
   const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+  const loadedNames = new Set();
 
   for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
-    const command = require(filePath);
+    let command;
+    try {
+      command = require(filePath);
+    } catch (err) {
+      console.error(`[❌] Error al cargar ${file}:`, err);
+      continue;
+    }
 
     if ('data' in command && 'execute' in command) {
+      if (loadedNames.has(command.data.name)) {
+        console.warn(`[⚠️] Comando duplicado detectado: ${command.data.name} en ${file}`);
+        continue;
+      }
       client.commands.set(command.data.name, command);
       slashCommands.push(command.data);
+      loadedNames.add(command.data.name);
+      console.log(`[✅] Comando cargado: ${command.data.name}`);
     } else {
       console.warn(`[⚠️] El comando en ${file} es inválido (falta data o execute).`);
     }
   }
+  if (slashCommands.length === 0) {
+    console.warn('[⚠️] No se cargaron comandos válidos.');
+  }
   return slashCommands;
+}
+
+function reloadCommands(client) {
+  // Limpia el cache de require para cada comando
+  const commandsPath = path.join(__dirname, 'commands');
+  if (!fs.existsSync(commandsPath)) {
+    console.warn(`[⚠️] Directorio no encontrado: ${commandsPath}`);
+    return [];
+  }
+  const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+  for (const file of commandFiles) {
+    const filePath = path.join(commandsPath, file);
+    delete require.cache[require.resolve(filePath)];
+  }
+  return loadCommands(client);
+}
+
+function reloadEvents(client, slashCommands) {
+  // Elimina todos los listeners actuales excepto los básicos
+  client.removeAllListeners('ready');
+  client.removeAllListeners('interactionCreate');
+  client.removeAllListeners('messageCreate');
+  registerEvents(client, slashCommands);
 }
 
 function registerEvents(client, slashCommands) {
@@ -72,6 +111,12 @@ function registerEvents(client, slashCommands) {
   });
 }
 
+function setupBot(client) {
+  const slashCommands = loadCommands(client);
+  registerEvents(client, slashCommands);
+  return slashCommands;
+}
+
 function start() {
   const token = process.env.DISCORD_BOT_TOKEN;
   if (!token) {
@@ -80,14 +125,26 @@ function start() {
   }
 
   const client = createClient();
-  const slashCommands = loadCommands(client);
-  
-  registerEvents(client, slashCommands);
+  let slashCommands = setupBot(client);
   
   client.login(token).catch(err => {
     console.error('[❌] Error al conectar a Discord:', err);
     process.exit(1);
   });
+
+  // Recargar comandos y eventos con un mensaje
+  client.on('messageCreate', async (msg) => {
+    if (msg.content === '!reload' && msg.member?.permissions.has('Administrator')) {
+      slashCommands = reloadCommands(client);
+      reloadEvents(client, slashCommands);
+      try {
+        await client.application.commands.set(slashCommands);
+        msg.reply('✅ Comandos y eventos recargados correctamente.');
+      } catch (err) {
+        msg.reply('❌ Error al recargar comandos o eventos.');
+      }
+    }
+  });
 }
 
-module.exports = { start };
+module.exports = { start, reloadCommands, reloadEvents, setupBot };
