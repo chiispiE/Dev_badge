@@ -57,7 +57,6 @@ function loadCommands(client) {
 }
 
 function reloadCommands(client) {
-  // Limpia el cache de require para cada comando
   const commandsPath = path.join(__dirname, 'commands');
   if (!fs.existsSync(commandsPath)) {
     console.warn(`[⚠️] Directorio no encontrado: ${commandsPath}`);
@@ -72,7 +71,6 @@ function reloadCommands(client) {
 }
 
 function reloadEvents(client, slashCommands) {
-  // Elimina todos los listeners actuales excepto los básicos
   client.removeAllListeners('ready');
   client.removeAllListeners('interactionCreate');
   client.removeAllListeners('messageCreate');
@@ -132,7 +130,6 @@ function start() {
     process.exit(1);
   });
 
-  // Recargar comandos y eventos con un mensaje
   client.on('messageCreate', async (msg) => {
     if (msg.content === '!reload' && msg.member?.permissions.has('Administrator')) {
       slashCommands = reloadCommands(client);
