@@ -1,6 +1,6 @@
 # 🤖 Active Developer Badge Bot [Luci]
 
-[![Node.js CI](https://github.com/cristobalvm10/Active-Developer-Badge/actions/workflows/node.js.yml/badge.svg)](https://github.com/cristobalvm10/Active-Developer-Badge/actions/workflows/node.js.yml)
+[![Node.js](https://github.com/cristobalvm10/Active-Developer-Badge/actions/workflows/node.js.yml/badge.svg)](https://github.com/cristobalvm10/Active-Developer-Badge/actions/workflows/node.js.yml)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 [![Discord.js](https://img.shields.io/badge/discord.js-v14.6.0-5865F2?logo=discord&logoColor=white)](https://discord.js.org/)
 
