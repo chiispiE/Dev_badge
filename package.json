@@ -1,0 +1,29 @@
+{
+  "name": "active-developer-badge",
+  "version": "1.0.0",
+  "description": "Discord bot migrated into src folder with cleaner structure",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cristobalvm10/Active-Developer-Badge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cristobalvm10/Active-Developer-Badge/issues"
+  },
+  "homepage": "https://github.com/cristobalvm10/Active-Developer-Badge#readme",
+  "dependencies": {
+    "discord.js": "^14.6.0",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
